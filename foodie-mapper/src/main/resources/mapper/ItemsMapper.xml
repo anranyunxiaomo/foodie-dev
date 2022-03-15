@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.moxuan.mapper.ItemsMapper">
+  <resultMap id="BaseResultMap" type="com.moxuan.pojo.Items">
+    <!--@mbg.generated-->
+    <!--@Table items-->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="item_name" jdbcType="VARCHAR" property="itemName" />
+    <result column="cat_id" jdbcType="INTEGER" property="catId" />
+    <result column="root_cat_id" jdbcType="INTEGER" property="rootCatId" />
+    <result column="sell_counts" jdbcType="INTEGER" property="sellCounts" />
+    <result column="on_off_status" jdbcType="INTEGER" property="onOffStatus" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, item_name, cat_id, root_cat_id, sell_counts, on_off_status, content, created_time, 
+    updated_time
+  </sql>
+</mapper>
