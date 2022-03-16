@@ -32,6 +32,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <mybatis-plus.version>3.5.1</mybatis-plus.version>
+        <hutool.version>5.7.22</hutool.version>
+        <fastjson.version>1.2.79</fastjson.version>
     </properties>
 
     <dependencies>
@@ -81,11 +84,12 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.4.3.1</version>
+            <version>${mybatis-plus.version}</version>
         </dependency>
-        <!-- ====================== DB依赖 结束 ====================== -->
+        <!-- ====================== DB依赖 结束 ==================== == -->
 
         <!-- ===================== 外部引入 开始 ===================== -->
+
         <!-- ===================== 外部引入 结束 ===================== -->
 
         <!-- ====================== 工具类依赖 开始 ====================== -->
@@ -93,8 +97,27 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+           <version>${hutool.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-jdk8</artifactId>
+            <version>1.5.0.Beta2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>1.5.0.Beta2</version>
+        </dependency>
         <!-- ====================== 工具类依赖 结束 ====================== -->
-
     </dependencies>
 
 </project>
