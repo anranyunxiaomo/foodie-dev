@@ -4,6 +4,8 @@ target/
 !**/src/test/**/target/
 
 ### IntelliJ IDEA ###
+/.idea/Compiler.xml
+/.idea/misc.xml
 .idea/modules.xml
 .idea/libraries/
 *.iws
