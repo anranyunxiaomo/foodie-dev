@@ -1,6 +1,7 @@
 package com.moxuan.controller;
 
 import com.moxuan.bo.UserAddBO;
+import com.moxuan.pojo.Users;
 import com.moxuan.service.UsersService;
 import com.moxuan.utils.BaseResp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class PassportController {
      * 注册
      */
     @PostMapping("/regist")
-    public BaseResp regist(@RequestBody @Valid UserAddBO userAddBO) {
+    public BaseResp<Users> regist(@RequestBody @Valid UserAddBO userAddBO) {
         return userService.regist(userAddBO);
     }
 

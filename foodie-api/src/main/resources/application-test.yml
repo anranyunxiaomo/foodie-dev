@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/foodie-shop-dev?serverTimezone=UTC&useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8
+    username: root
+    password: 123456
+    hikari:
+      auto-commit: true
+      connection-test-query: SELECT 1
+      connection-timeout: 3000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      maximum-pool-size: 20
+      minimum-idle: 2
+      pool-name: HikariCP
+mybatis-plus:
+  type-aliases-package: com.moxuan.pojo
+  mapper-locations: classpath:mapper/*.xml
+
+# 默认头像
+user:
+  face: http://122.152.205.72:88/group1/M00/00/05/CpoxxFw_8_qAIlFXAAAcIhVPdSg994.png
