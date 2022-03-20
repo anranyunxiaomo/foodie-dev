@@ -24,6 +24,7 @@
         <module>foodie-mapper</module>
         <module>foodie-service</module>
         <module>foodie-api</module>
+        <module>foodie-payment</module>
     </modules>
 
     <!-- 项目版本的管理 -->

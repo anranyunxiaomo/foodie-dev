@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/foodie-shop-dev?serverTimezone=UTC&useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8
+    url: jdbc:mysql://127.0.0.1:3306/itzixi-pay?serverTimezone=UTC&useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8
     username: root
     password: 123456
     hikari:
@@ -14,7 +14,7 @@ spring:
       minimum-idle: 2
       pool-name: HikariCP
 mybatis-plus:
-  type-aliases-package: com.moxuan.pojo
+  type-aliases-package: com.moxuan.payment
   mapper-locations: classpath:mapper/*.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -26,13 +26,6 @@ pagehelper:
   pageSizeZero: false #pageSize=0 返回所有
   params: count=countSql
 
-# 默认头像
-user:
-  face: http://122.152.205.72:88/group1/M00/00/05/CpoxxFw_8_qAIlFXAAAcIhVPdSg994.png
 
-#支付中心
-payment:
-  # 回调地址：
-  callback: http://127.0.0.1:8089/
-  # 创建订单通知地址:
-  notice: http://127.0.0.1:8089/foodie-payment/payment/createMerchantOrder
+
+

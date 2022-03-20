@@ -4,11 +4,12 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 /**
  * 订单状态表 订单的每个状态更改都需要进行记录
@@ -68,4 +69,12 @@ public class OrderStatus {
      */
     @TableField(value = "comment_time")
     private Date commentTime;
+
+
+    public OrderStatus(String orderId, Integer orderStatus, Date createdTime) {
+        this.orderId = orderId;
+        this.orderStatus = orderStatus;
+        this.createdTime = createdTime;
+    }
+
 }

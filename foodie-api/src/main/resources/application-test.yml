@@ -29,3 +29,8 @@ pagehelper:
 # 默认头像
 user:
   face: http://122.152.205.72:88/group1/M00/00/05/CpoxxFw_8_qAIlFXAAAcIhVPdSg994.png
+
+#支付中心
+payment:
+  # 回调地址：
+  callback: http://127.0.0.1:8089/
