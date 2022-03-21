@@ -1,13 +1,16 @@
 package com.moxuan.service;
 
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moxuan.ao.MountAO;
 import com.moxuan.bo.SubmitOrderBO;
-import com.moxuan.config.PaymentProperties;
+import com.moxuan.payment.config.PaymentProperties;
 import com.moxuan.mapper.OrdersMapper;
+import com.moxuan.pojo.OrderStatus;
 import com.moxuan.pojo.Orders;
 import com.moxuan.pojo.UserAddress;
 import com.moxuan.pojo.mapper.MerchantOrdersVOBeanMapper;
@@ -18,6 +21,7 @@ import com.moxuan.utils.ResultUtil;
 import com.moxuan.vo.MerchantOrdersVO;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 @Service
 public class OrdersService extends ServiceImpl<OrdersMapper, Orders> {
@@ -90,7 +95,17 @@ public class OrdersService extends ServiceImpl<OrdersMapper, Orders> {
         return ResultUtil.ok(orderId);
     }
 
-
+    /**
+     * 支付中心通知商家订单已支付
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Integer notifyMerchantOrderPaid(String merchantOrderId, int i) {
+        OrderStatus orderStatus = new OrderStatus();
+        orderStatus.setOrderStatus(i);
+        orderStatus.setPayTime(new Date());
+        this.orderStatusService.update(orderStatus, Wrappers.<OrderStatus>lambdaUpdate().eq(OrderStatus::getOrderId,merchantOrderId));
+        return  HttpStatus.OK.value();
+    }
 }
 
 

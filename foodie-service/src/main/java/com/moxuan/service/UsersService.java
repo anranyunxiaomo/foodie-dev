@@ -7,7 +7,7 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moxuan.bo.UserAddBO;
 import com.moxuan.bo.UserBO;
-import com.moxuan.config.UserFaceProperties;
+import com.moxuan.payment.config.UserFaceProperties;
 import com.moxuan.enums.Sex;
 import com.moxuan.mapper.UsersMapper;
 import com.moxuan.pojo.Users;
@@ -110,10 +110,9 @@ public class UsersService extends ServiceImpl<UsersMapper, Users> {
      * 退出
      */
     public BaseResp logout(String userId, HttpServletRequest request, HttpServletResponse response) {
-
-
         CookieUtils.deleteCookie(request, response, "user");
         return ResultUtil.ok();
     }
+
 }
 

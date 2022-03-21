@@ -1,4 +1,4 @@
-package com.moxuan.config;
+package com.moxuan.payment.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.moxuan.config;
+package com.moxuan.payment.config;
 
 
 import com.baomidou.mybatisplus.annotation.DbType;

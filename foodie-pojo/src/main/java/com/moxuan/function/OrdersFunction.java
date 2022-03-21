@@ -8,7 +8,6 @@ import java.util.function.Function;
 
 public class OrdersFunction {
 
-
     /**
      * 拼接订单的完整地址
      */

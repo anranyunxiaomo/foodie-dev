@@ -27,13 +27,10 @@ public interface OrdersBeanMapper {
             @Mapping(target = "updatedTime", expression = "java(new java.util.Date())"),
             @Mapping(target = "totalAmount", source = "mountAO.totalAmount"),
             @Mapping(target = "realPayAmount", source = "mountAO.realPayAmount"),
-
     })
     Orders combination(String orderId,
                        SubmitOrderBO submitOrderBO,
                        UserAddress userAddress,
                        Integer postAmount,
                        MountAO mountAO);
-
-
 }

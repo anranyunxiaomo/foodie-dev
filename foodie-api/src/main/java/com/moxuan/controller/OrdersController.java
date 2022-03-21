@@ -30,5 +30,12 @@ public class OrdersController {
         return ordersService.create(submitOrderBO, request, response);
     }
 
+    /**
+     * 支付中心通知商家订单已支付
+     */
+    @PostMapping("notifyMerchantOrderPaid")
+    public Integer notifyMerchantOrderPaid(String merchantOrderId){
+        return ordersService.notifyMerchantOrderPaid(merchantOrderId, 20);
+}
 
 }
