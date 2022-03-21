@@ -1,4 +1,4 @@
-﻿package com.moxuan.payment.controller;
+package com.moxuan.payment.controller;
 
 import com.moxuan.payment.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "/payment/notice")

@@ -1,4 +1,4 @@
-﻿package com.moxuan.payment.pojo.vo;
+package com.moxuan.payment.pojo.vo;
 
 import lombok.Data;
 

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.moxuan.constant.CommonConstant;
 import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Objects;
 

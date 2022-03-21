@@ -1,4 +1,4 @@
-﻿package com.moxuan.payment.pojo.mapper;
+package com.moxuan.payment.pojo.mapper;
 
 
 import com.moxuan.payment.pojo.vo.PaymentInfoVO;
