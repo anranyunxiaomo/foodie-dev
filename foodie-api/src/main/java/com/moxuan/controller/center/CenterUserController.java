@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,4 +34,15 @@ public class CenterUserController {
                 request,
                 response);
     }
+
+    /**
+     * 更新用户的头像
+     */
+    @PostMapping("/uploadFace")
+    public BaseResp uploadFace(@RequestParam String userId,
+                               MultipartFile file,
+                               HttpServletRequest request, HttpServletResponse response) {
+        return centerUserService.uploadFace(userId, file, request, response);
+    }
+
 }
