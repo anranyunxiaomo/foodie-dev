@@ -35,4 +35,13 @@ public class CenterOrderStatusService extends ServiceImpl<OrderStatusMapper, Ord
                 .eq(OrderStatus::getOrderStatus, 30));
     }
 
+    /**
+     * 修改订单状态表的留言时间
+     */
+    public void updateOrdersStatusCommentTime(String orderId) {
+        OrderStatus orderStatus = new OrderStatus();
+        orderStatus.setOrderId(orderId);
+        orderStatus.setCommentTime(new Date());
+        this.updateById(orderStatus);
+    }
 }

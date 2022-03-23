@@ -1,34 +1,48 @@
 package com.moxuan.controller.center;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.moxuan.bo.center.OrderItemsCommentBO;
+import com.moxuan.page.PageInfo;
+import com.moxuan.service.center.MyCommentsService;
+import com.moxuan.utils.BaseResp;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("mycomments")
 public class MyCommentsController {
-//
-//    @PostMapping("/pending")
-//    public BaseResp pending(
-//
-//            @RequestParam String userId,
-//            @ApiParam(name = "orderId", value = "订单id", required = true)
-//            @RequestParam String orderId) {
-//
-//        // 判断用户和订单是否关联
-//        IMOOCJSONResult checkResult = checkUserOrder(userId, orderId);
-//        if (checkResult.getStatus() != HttpStatus.OK.value()) {
-//            return checkResult;
-//        }
-//        // 判断该笔订单是否已经评价过，评价过了就不再继续
-//        Orders myOrder = (Orders)checkResult.getData();
-//        if (myOrder.getIsComment() == YesOrNo.YES.type) {
-//            return IMOOCJSONResult.errorMsg("该笔订单已经评价");
-//        }
-//
-//        List<OrderItems> list = myCommentsService.queryPendingComment(orderId);
-//
-//        return IMOOCJSONResult.ok(list);
-//    }
+
+    @Autowired
+    private MyCommentsService myCommentsService;
+
+    /**
+     * 查询订单完成后，评价列表展示
+     */
+    @PostMapping("/pending")
+    public BaseResp pending(@RequestParam String userId,
+                            @RequestParam String orderId) {
+        return myCommentsService.pending(userId, orderId);
+    }
+
+    /**
+     * 保存评论列表
+     */
+    @PostMapping("/saveList")
+    public BaseResp saveList(@RequestParam String userId,
+                             @RequestParam String orderId,
+                             @RequestBody List<OrderItemsCommentBO> commentList) {
+        return myCommentsService.saveList(userId, orderId, commentList);
+    }
+
+    /**
+     * 查询我的评价
+     */
+    @PostMapping("/query")
+    public BaseResp queryMyComments(@RequestParam String userId,
+                                    PageInfo pageInfo) {
+        return myCommentsService.queryMyComments(userId, pageInfo);
+    }
 
 
 }

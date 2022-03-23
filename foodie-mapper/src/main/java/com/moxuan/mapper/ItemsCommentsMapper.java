@@ -7,6 +7,7 @@ import com.moxuan.pojo.ItemsComments;
 import com.moxuan.vo.ItemCommentVO;
 import com.moxuan.vo.SearchItemsVO;
 import com.moxuan.vo.ShopcartVO;
+import com.moxuan.vo.center.MyCommentVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,4 +26,6 @@ public interface ItemsCommentsMapper extends BaseMapper<ItemsComments> {
     Page<SearchItemsVO> searchItems(Page<SearchItemsVO> page, @Param("keywords") String keywords, @Param("catId") Integer catId, @Param("sort") String sort);
 
     List<ShopcartVO> queryItemsBySpecIds(@Param("itemSpecIdList") List<String> itemSpecIdList);
+
+    Page<MyCommentVO> queryMyComments(Page<MyCommentVO> page, @Param("userId") String userId);
 }

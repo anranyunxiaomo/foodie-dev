@@ -54,5 +54,21 @@ public class MyOrdersController {
         return myOrdersService.delete(orderId, userId);
     }
 
+    /**
+     * 获得订单状态数概况
+     */
+    @PostMapping("/statusCounts")
+    public BaseResp statusCounts(@RequestParam String userId) {
+        return myOrdersService.statusCounts(userId);
+    }
+
+    /**
+     * 查询订单动向
+     */
+    @PostMapping("/trend")
+    public BaseResp trend(@RequestParam String userId,
+                          PageInfo pageInfo) {
+        return myOrdersService.trend(userId, pageInfo);
+    }
 
 }

@@ -5,19 +5,23 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.moxuan.ao.center.MyOrderStatusCountsAO;
 import com.moxuan.mapper.OrdersMapper;
 import com.moxuan.page.PageInfo;
+import com.moxuan.pojo.OrderStatus;
 import com.moxuan.pojo.Orders;
 import com.moxuan.pojo.mapper.center.CenterOrdersBeanMapper;
 import com.moxuan.utils.BaseResp;
 import com.moxuan.utils.PagedGridResult;
 import com.moxuan.utils.ResultUtil;
 import com.moxuan.vo.center.MyOrdersVO;
+import com.moxuan.vo.center.OrderStatusCountsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class MyOrdersService extends ServiceImpl<OrdersMapper, Orders> {
@@ -88,7 +92,7 @@ public class MyOrdersService extends ServiceImpl<OrdersMapper, Orders> {
 
     }
 
-    private boolean checkUserOrder(String orderId, String userId) {
+    public boolean checkUserOrder(String orderId, String userId) {
         Orders orders = this.lambdaQuery().eq(Orders::getId, orderId)
                 .eq(Orders::getUserId, userId)
                 .eq(Orders::getIsDelete, 0)
@@ -99,4 +103,41 @@ public class MyOrdersService extends ServiceImpl<OrdersMapper, Orders> {
         return false;
     }
 
+    // 2. 修改订单表改已评价 orders
+    public void updateOrdersComments(String orderId) {
+        Orders orders = new Orders();
+        orders.setId(orderId);
+        orders.setIsComment(1);
+        this.updateById(orders);
+    }
+
+    /**
+     * 获得订单状态数概况
+     */
+    public BaseResp statusCounts(String userId) {
+        List<MyOrderStatusCountsAO> myOrderStatusCounts = this.baseMapper.getMyOrderStatusCounts(userId);
+        Integer waitPayCounts = getCount(myOrderStatusCounts, 10);
+        Integer waitDeliverCounts = getCount(myOrderStatusCounts, 20);
+        Integer waitReceiveCounts = getCount(myOrderStatusCounts, 30);
+        Integer waitCommentCounts = getCount(myOrderStatusCounts, 40);
+        OrderStatusCountsVO combination = centerOrdersBeanMapper.combination(waitPayCounts, waitDeliverCounts, waitReceiveCounts, waitCommentCounts);
+        return ResultUtil.ok(combination);
+    }
+
+    /**
+     * 查询订单动向
+     */
+    public BaseResp trend(String userId, PageInfo pageInfo) {
+        Page<OrderStatus> page = new Page<>(pageInfo.getPage(), pageInfo.getPageSize());
+        page = this.baseMapper.getMyOrderTrend(page, userId);
+        PagedGridResult<OrderStatus> orderStatusPagedGridResult = centerOrdersBeanMapper.toOrderStatus(page);
+        return ResultUtil.ok(orderStatusPagedGridResult);
+    }
+
+
+    public Integer getCount(List<MyOrderStatusCountsAO> myOrderStatusCounts, Integer orderStatus) {
+        return myOrderStatusCounts.stream()
+                .filter(MyOrderStatusCountsAO -> MyOrderStatusCountsAO.getOrderStatus() == orderStatus)
+                .mapToInt(MyOrderStatusCountsAO::getCount).sum();
+    }
 }

@@ -1,4 +1,4 @@
-package com.moxuan.vo;
+package com.moxuan.vo.center;
 
 import lombok.Data;
 
