@@ -41,7 +41,6 @@ public class MyOrdersService extends ServiceImpl<OrdersMapper, Orders> {
         return ResultUtil.ok(myOrdersVOPagedGridResult);
     }
 
-
     /**
      * 商家发货没有后端，所以这个接口仅仅只是用于模拟
      */
@@ -52,7 +51,6 @@ public class MyOrdersService extends ServiceImpl<OrdersMapper, Orders> {
         CenterOrderStatusService.updateDeliverOrderStatus(orderId);
         return ResultUtil.ok();
     }
-
 
     /**
      * 用户确认收货
@@ -69,7 +67,6 @@ public class MyOrdersService extends ServiceImpl<OrdersMapper, Orders> {
 
         return ResultUtil.ok();
     }
-
 
     /**
      * 用户删除订单
@@ -133,7 +130,6 @@ public class MyOrdersService extends ServiceImpl<OrdersMapper, Orders> {
         PagedGridResult<OrderStatus> orderStatusPagedGridResult = centerOrdersBeanMapper.toOrderStatus(page);
         return ResultUtil.ok(orderStatusPagedGridResult);
     }
-
 
     public Integer getCount(List<MyOrderStatusCountsAO> myOrderStatusCounts, Integer orderStatus) {
         return myOrderStatusCounts.stream()

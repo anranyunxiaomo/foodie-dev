@@ -1,6 +1,6 @@
 package com.moxuan.controller.center;
 
-import com.moxuan.pojo.center.CenterUserBO;
+import com.moxuan.common.CenterUserBO;
 import com.moxuan.service.center.CenterUserService;
 import com.moxuan.utils.BaseResp;
 import org.springframework.beans.factory.annotation.Autowired;

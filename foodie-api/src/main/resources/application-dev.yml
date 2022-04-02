@@ -13,6 +13,29 @@ spring:
       maximum-pool-size: 20
       minimum-idle: 2
       pool-name: HikariCP
+  # redis
+  redis:
+    host: sf.19940309.xyz
+    port: 6379
+    password: 123456aA.
+    database: 9
+    timeout: 5000
+    lettuce:
+      pool:
+        # 连接池最大空闲连接
+        max-idle: 8
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: 8
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: 1000
+        # 连接池中的最小空闲连接
+        min-idle: 1
+      # 在关闭客户端连接之前等待任务处理完成的最长时间，在这之后，无论任务是否执行完成，都会被执行器关闭，默认100ms
+      shutdown-timeout: 100
+  cache:
+    redis:
+      cache-null-values: false
+
 mybatis-plus:
   type-aliases-package: com.moxuan.pojo
   mapper-locations: classpath:mapper/*.xml
@@ -39,4 +62,3 @@ payment:
   callback: http://127.0.0.1:8089/
   # 创建订单通知地址:
   notice: http://127.0.0.1:8089/foodie-payment/payment/createMerchantOrder
-

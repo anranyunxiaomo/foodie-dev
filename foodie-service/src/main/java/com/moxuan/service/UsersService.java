@@ -25,6 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
+import static com.moxuan.constant.RedisKeyConstant.FOODIE_SHOPCART;
+
 @Service
 public class UsersService extends ServiceImpl<UsersMapper, Users> {
 
@@ -34,13 +36,15 @@ public class UsersService extends ServiceImpl<UsersMapper, Users> {
     private UserFaceProperties userFaceProperties;
     @Autowired
     private Sid sid;
+    @Autowired
+    private ShopcartService shopcartService;
 
     /**
      * 注册名称校验
      */
     public BaseResp usernameIsExist(String username) {
         // 判断用户名称是否为空
-        if (StrUtil.isBlank(username)){
+        if (StrUtil.isBlank(username)) {
             return ResultUtil.error("用户名称不能为空");
         }
         // 判断用户名称是否已经存在
@@ -87,6 +91,7 @@ public class UsersService extends ServiceImpl<UsersMapper, Users> {
                 .select(Users::getUsername, Users::getId, Users::getFace, Users::getSex)
                 .one();
         CookieUtils.setCookie(request, response, "user", JSONUtil.toJsonStr(users), true);
+        shopcartService.synchShopcartData(users.getId(), request, response);
         return ResultUtil.ok();
     }
 
@@ -103,6 +108,7 @@ public class UsersService extends ServiceImpl<UsersMapper, Users> {
             return ResultUtil.error("用户名或密码不正确");
         }
         CookieUtils.setCookie(request, response, "user", JSONUtil.toJsonStr(users), true);
+        shopcartService.synchShopcartData(users.getId(), request, response);
         return ResultUtil.ok(users);
     }
 
@@ -111,6 +117,8 @@ public class UsersService extends ServiceImpl<UsersMapper, Users> {
      */
     public BaseResp logout(String userId, HttpServletRequest request, HttpServletResponse response) {
         CookieUtils.deleteCookie(request, response, "user");
+        // 分布式会话中需要清除用户数据
+        CookieUtils.deleteCookie(request, response, FOODIE_SHOPCART.getName());
         return ResultUtil.ok();
     }
 

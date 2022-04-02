@@ -1,7 +1,7 @@
 package com.moxuan.pojo.mapper.center;
 
+import com.moxuan.common.CenterUserBO;
 import com.moxuan.pojo.Users;
-import com.moxuan.pojo.center.CenterUserBO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;

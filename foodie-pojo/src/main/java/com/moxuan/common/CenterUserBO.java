@@ -1,4 +1,4 @@
-package com.moxuan.pojo.center;
+package com.moxuan.common;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

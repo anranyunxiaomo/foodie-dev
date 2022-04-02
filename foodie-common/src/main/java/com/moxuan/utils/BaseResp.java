@@ -4,11 +4,12 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.core.toolkit.ArrayUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.moxuan.constant.CommonConstant;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Objects;
+
+import static com.moxuan.constant.CommonConstant.SUCCESS;
 
 @Data
 public class BaseResp<T> implements Serializable {
@@ -83,7 +84,7 @@ public class BaseResp<T> implements Serializable {
      * 静态构造方法，处理成功
      */
     public static <T> BaseResp<T> success() {
-        return new BaseResp<>(CommonConstant.SUCCESS);
+        return new BaseResp<>(SUCCESS.getCode());
     }
 
     /**
@@ -92,7 +93,7 @@ public class BaseResp<T> implements Serializable {
      * @param message 前端提示信息
      */
     public static <T> BaseResp<T> success(String message) {
-        return new BaseResp<>(CommonConstant.SUCCESS, message);
+        return new BaseResp<>(SUCCESS.getCode(), message);
     }
 
     /**
@@ -101,7 +102,7 @@ public class BaseResp<T> implements Serializable {
      * @param body 响应消息体(泛型)
      */
     public static <T> BaseResp<T> success(T body) {
-        BaseResp<T> restResponse = new BaseResp<>(CommonConstant.SUCCESS);
+        BaseResp<T> restResponse = new BaseResp<>(SUCCESS.getCode());
         restResponse.setData(body);
         return restResponse;
     }
@@ -112,7 +113,7 @@ public class BaseResp<T> implements Serializable {
      * @param body 响应消息体(泛型)
      */
     public static <T> BaseResp<T> successBody(T body) {
-        BaseResp<T> restResponse = new BaseResp<>(CommonConstant.SUCCESS);
+        BaseResp<T> restResponse = new BaseResp<>(SUCCESS.getCode());
         restResponse.setData(body);
         return restResponse;
     }
@@ -131,7 +132,7 @@ public class BaseResp<T> implements Serializable {
     @JsonIgnore
     @JSONField(serialize = false)
     public boolean isSuccess() {
-        return Objects.equals(this.status, CommonConstant.SUCCESS);
+        return Objects.equals(this.status, SUCCESS.getCode());
     }
 
     /**
