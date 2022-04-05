@@ -20,6 +20,16 @@ spring:
     password: 123456aA.
     database: 9
     timeout: 5000
+      # 哨兵模式
+      #    password: 123456aA.
+      #    database: 9
+      #    sentinel:
+    #      master:
+    #      nodes:
+    # 集群模式
+    #    password: 123456aA.
+    #    cluster:
+    #      nodes:
     lettuce:
       pool:
         # 连接池最大空闲连接
