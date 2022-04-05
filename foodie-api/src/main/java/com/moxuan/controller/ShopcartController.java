@@ -40,7 +40,7 @@ public class ShopcartController {
      */
     @PostMapping("/del")
     public BaseResp del(@RequestParam String userId,
-                        @RequestBody String itemSpecId,
+                        @RequestParam String itemSpecId,
                         HttpServletRequest request,
                         HttpServletResponse response) {
         if (StrUtil.isBlankIfStr(userId) || StrUtil.isBlankIfStr(itemSpecId)) {

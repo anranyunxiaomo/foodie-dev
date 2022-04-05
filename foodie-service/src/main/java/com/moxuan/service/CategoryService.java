@@ -53,7 +53,7 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
         List<CategoryVO> subCatList;
         if (StrUtil.isBlankIfStr(subCat)) {
             subCatList = this.baseMapper.getSubCatList(rootCatId);
-            redisOperator.set(SUB_CAT.getName() + rootCatId, JSONUtil.toJsonStr(subCatList));
+            redisOperator.set(SUB_CAT.getName() + ":" + rootCatId, JSONUtil.toJsonStr(subCatList));
         } else {
             subCatList = JSONUtil.toList(subCat, CategoryVO.class);
         }

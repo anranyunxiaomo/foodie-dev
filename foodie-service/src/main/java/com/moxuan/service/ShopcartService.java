@@ -63,7 +63,7 @@ public class ShopcartService {
     public BaseResp del(String userId, String itemSpecId, HttpServletRequest request, HttpServletResponse response) {
         // TODO 用户在页面删除购物车中的商品数据，如果此时用户已经登录，则需要同步删除后端购物车中的商品
         String shopcart = redisOperator.get(FOODIE_SHOPCART.getName() + ":" + userId);
-        if (!StrUtil.isBlankIfStr(shopcart)) {
+        if (StrUtil.isNotBlank(shopcart)) {
             List<ShopcartBO> shopcartBOS = JSONUtil.toList(shopcart, ShopcartBO.class);
             // 将当前商品规格ID 的商品排除
             shopcartBOS = shopcartBOS.stream().filter(a -> !a.getSpecId().equals(itemSpecId)).collect(Collectors.toList());
@@ -83,11 +83,11 @@ public class ShopcartService {
         // 3  redis 中没有 cookie 有  要 cookie
         // 4  redis 中有  cookie 没有  要redis
         String shopcart = redisOperator.get(FOODIE_SHOPCART.getName() + ":" + userId);
-        String cookieValue = CookieUtils.getCookieValue(request, FOODIE_SHOPCART.getName());
+        String cookieValue = CookieUtils.getCookieValue(request, FOODIE_SHOPCART.getName(), true);
         // redis 中没有
         if (StrUtil.isBlankIfStr(shopcart)) {
             // cookie 有  要 cookie
-            if (!StrUtil.isBlankIfStr(cookieValue)) {
+            if (StrUtil.isNotBlank(cookieValue)) {
                 shopcartBOS = JSONUtil.toList(cookieValue, ShopcartBO.class);
             }
         } else {
@@ -96,8 +96,8 @@ public class ShopcartService {
                 shopcartBOS = JSONUtil.toList(shopcart, ShopcartBO.class);
                 // redis 中有  cookie 有  cookie 与redis 中有的要cookie 其他的要redis 合并即可
             } else {
-                List<ShopcartBO> redisList = JSONUtil.toList(cookieValue, ShopcartBO.class);
-                List<ShopcartBO> cookieList = JSONUtil.toList(shopcart, ShopcartBO.class);
+                List<ShopcartBO> redisList = JSONUtil.toList(shopcart, ShopcartBO.class);
+                List<ShopcartBO> cookieList = JSONUtil.toList(cookieValue, ShopcartBO.class);
                 Iterator<ShopcartBO> iterator = redisList.iterator();
                 while (iterator.hasNext()) {
                     ShopcartBO next = iterator.next();
@@ -106,14 +106,15 @@ public class ShopcartService {
                         iterator.remove();
                         // 覆盖购买数量，不累加，参考京东 cookie
                         shopcartBOS.addAll(shopcartBOList);
+                        cookieList.removeAll(shopcartBOList);
                     }
                 }
+                shopcartBOS.addAll(cookieList);
                 shopcartBOS.addAll(redisList);
             }
-            CookieUtils.setCookie(request, response, FOODIE_SHOPCART.getName(), JSONUtil.toJsonStr(shopcartBOS), true);
-            redisOperator.set(FOODIE_SHOPCART.getName() + ":" + userId, JSONUtil.toJsonStr(shopcartBOS));
         }
-
+        CookieUtils.setCookie(request, response, FOODIE_SHOPCART.getName(), JSONUtil.toJsonStr(shopcartBOS), true);
+        redisOperator.set(FOODIE_SHOPCART.getName() + ":" + userId, JSONUtil.toJsonStr(shopcartBOS));
 
     }
 
