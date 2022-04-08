@@ -25,6 +25,7 @@
         <module>foodie-service</module>
         <module>foodie-api</module>
         <module>foodie-payment</module>
+        <module>foodie-sso</module>
     </modules>
 
     <!-- 项目版本的管理 -->
@@ -82,7 +83,15 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
-
+        <!-- 引入 Spring session redis 依赖  -->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
         <!-- ====================== Spring依赖 结束 ====================== -->
 
         <!-- ====================== DB依赖 开始 ====================== -->

@@ -10,6 +10,7 @@ import com.moxuan.config.UserFaceProperties;
 import com.moxuan.mapper.UsersMapper;
 import com.moxuan.pojo.Users;
 import com.moxuan.pojo.mapper.center.CenterUserBeanMapper;
+import com.moxuan.service.UsersService;
 import com.moxuan.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,8 @@ public class CenterUserService extends ServiceImpl<UsersMapper, Users> {
     private FileUtils fileUtils;
     @Resource
     private UserFaceProperties userFaceProperties;
+    @Autowired
+    private UsersService usersService;
 
 
     /**
@@ -62,15 +65,7 @@ public class CenterUserService extends ServiceImpl<UsersMapper, Users> {
         }
 //        // 更新用户信息
         Users users = centerUserBeanMapper.combination(centerUserBO, userId);
-//        this.updateById(users);
-//        users = this.lambdaQuery().eq(Users::getId, userId)
-//                .select(Users::getUsername, Users::getId, Users::getFace, Users::getSex)
-//                .one();
-//        // 更新cookie
-//        CookieUtils.setCookie(request, response, "user",
-//                JSONUtil.toJsonStr(users), true);
         updateSelect(userId, request, response, users);
-        // TODO 后续要改，增加令牌token，会整合进redis，分布式会话
         return ResultUtil.ok();
     }
 
@@ -102,19 +97,16 @@ public class CenterUserService extends ServiceImpl<UsersMapper, Users> {
                 file.getParentFile().mkdirs();
             }
             multipartFile.transferTo(file);
+            multipartFile=null;
         } catch (IOException e) {
             throw new CustomException(ResultUtil.error("存储文件失败"));
-        } finally {
-            multipartFile = null;
         }
         // 生成对应的文件的名称
         Users users = Users.builder()
                 .id(userId)
                 .face(userFaceProperties.getImageServerUrl() + finalFacePath + "?+" + DateUtil.currentSeconds())
                 .build();
-
         updateSelect(userId, request, response, users);
-
         return ResultUtil.ok();
 
     }
@@ -128,9 +120,8 @@ public class CenterUserService extends ServiceImpl<UsersMapper, Users> {
         users = this.lambdaQuery().eq(Users::getId, userId)
                 .select(Users::getUsername, Users::getId, Users::getFace, Users::getSex)
                 .one();
-        // 更新cookie
-        CookieUtils.setCookie(request, response, "user",
-                JSONUtil.toJsonStr(users), true);
+        // 解决分布式用户会话同步的问题。
+        usersService.generateUserInfo(request,response,users);
     }
 
 }

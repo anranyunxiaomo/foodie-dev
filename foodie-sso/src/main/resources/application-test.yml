@@ -60,17 +60,3 @@ pagehelper:
   supportMethodsArguments: true
   pageSizeZero: false #pageSize=0 返回所有
   params: count=countSql
-
-# 默认头像
-user:
-  face: http://122.152.205.72:88/group1/M00/00/05/CpoxxFw_8_qAIlFXAAAcIhVPdSg994.png
-  pathPrefix: /Users/xuan/Desktop/file/
-  driveLetter: /
-  imageServerUrl: http://127.0.0.1:8088/
-
-#支付中心
-payment:
-  # 回调地址：
-  callback: http://127.0.0.1:8089/
-  # 创建订单通知地址:
-  notice: http://127.0.0.1:8089/foodie-payment/payment/createMerchantOrder

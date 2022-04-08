@@ -1,6 +1,7 @@
 package com.moxuan.service;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -8,14 +9,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moxuan.bo.UserAddBO;
 import com.moxuan.bo.UserBO;
 import com.moxuan.config.UserFaceProperties;
+import static com.moxuan.constant.RedisKeyConstant.*;
 import com.moxuan.enums.Sex;
 import com.moxuan.mapper.UsersMapper;
 import com.moxuan.pojo.Users;
 import com.moxuan.pojo.mapper.UserBeanMapper;
-import com.moxuan.utils.BaseResp;
-import com.moxuan.utils.CookieUtils;
-import com.moxuan.utils.MD5Utils;
-import com.moxuan.utils.ResultUtil;
+import com.moxuan.utils.*;
+import com.moxuan.vo.UsersVO;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +38,8 @@ public class UsersService extends ServiceImpl<UsersMapper, Users> {
     private Sid sid;
     @Autowired
     private ShopcartService shopcartService;
+    @Autowired
+    private RedisOperator redisOperator;
 
     /**
      * 注册名称校验
@@ -90,7 +92,9 @@ public class UsersService extends ServiceImpl<UsersMapper, Users> {
                 .eq(Users::getId, users.getId())
                 .select(Users::getUsername, Users::getId, Users::getFace, Users::getSex)
                 .one();
-        CookieUtils.setCookie(request, response, "user", JSONUtil.toJsonStr(users), true);
+        // 设置redis 分布式会话token
+        generateUserInfo(request, response, users);
+        // 同步购物车的信息
         shopcartService.synchShopcartData(users.getId(), request, response);
         return ResultUtil.ok();
     }
@@ -107,16 +111,31 @@ public class UsersService extends ServiceImpl<UsersMapper, Users> {
         if (ObjectUtil.isNull(users)) {
             return ResultUtil.error("用户名或密码不正确");
         }
-        CookieUtils.setCookie(request, response, "user", JSONUtil.toJsonStr(users), true);
+        // 设置redis 分布式会话token
+        generateUserInfo(request, response, users);
+        // 同步购物车的信息
         shopcartService.synchShopcartData(users.getId(), request, response);
         return ResultUtil.ok(users);
+    }
+
+    public void generateUserInfo(HttpServletRequest request, HttpServletResponse response, Users users) {
+        // 获取一个唯一token
+        String userUniqueToken = UUID.randomUUID().toString().trim();
+        UsersVO usersVO = userMapper.toUsersVO(users, userUniqueToken);
+        // 存储到token
+        redisOperator.set(REDIS_USER_TOKEN.getName()+":"+ users.getId(),userUniqueToken);
+       // 更新 cookie
+        CookieUtils.setCookie(request, response, "user", JSONUtil.toJsonStr(usersVO), true);
     }
 
     /**
      * 退出
      */
     public BaseResp logout(String userId, HttpServletRequest request, HttpServletResponse response) {
+        // 清除用户的相关信息的cookie
         CookieUtils.deleteCookie(request, response, "user");
+        // 用户退出登录，清除redis中user的会话信息
+        redisOperator.del(REDIS_USER_TOKEN.getName() + ":" + userId);
         // 分布式会话中需要清除用户数据
         CookieUtils.deleteCookie(request, response, FOODIE_SHOPCART.getName());
         return ResultUtil.ok();
