@@ -133,6 +133,15 @@ public final class CookieUtils {
     }
 
     /**
+     * 该方法主要是为了设置当前 cas统一认证时，授权的用户凭证归属当前域名 sso.com 我理解应该是为了安全
+     */
+    public static void setCookie(String mainName, HttpServletResponse response, String cookieName,
+                                 String cookieValue, boolean isEncode) {
+        doSetCookie(mainName, response, cookieName, cookieValue, -1, isEncode);
+    }
+
+
+    /**
      * @param request
      * @param response
      * @param cookieName
@@ -240,6 +249,37 @@ public final class CookieUtils {
             e.printStackTrace();
         }
     }
+
+    /**
+     * @param domainName   配置
+     * @param response
+     * @param cookieName
+     * @param cookieValue
+     * @param cookieMaxage cookie生效的最大秒数
+     * @param isEncode
+     * @Description: 设置Cookie的值，并使其在指定时间内生效
+     */
+    private static void doSetCookie(String domainName, HttpServletResponse response,
+                                    String cookieName, String cookieValue, int cookieMaxage, boolean isEncode) {
+        try {
+            if (cookieValue == null) {
+                cookieValue = "";
+            } else if (isEncode) {
+                cookieValue = URLEncoder.encode(cookieValue, "utf-8");
+            }
+            Cookie cookie = new Cookie(cookieName, cookieValue);
+            if (cookieMaxage > 0)
+                cookie.setMaxAge(cookieMaxage);
+            // 设置域名的cookie
+            logger.info("========== domainName: {} ==========", domainName);
+            cookie.setDomain("." + domainName);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * @return

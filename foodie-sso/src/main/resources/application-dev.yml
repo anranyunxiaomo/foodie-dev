@@ -1,6 +1,12 @@
 spring:
-  session:
-    store-type: redis
+  thymeleaf:
+    mode: HTML
+    encoding: UTF-8
+    # 配置模板所在路径
+    prefix: classpath:/templates/
+    suffix: .html
+  #  session:
+  #    store-type: redis
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/foodie-shop-dev?serverTimezone=UTC&useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8
@@ -22,6 +28,12 @@ spring:
     password: zhangKAI0205
     database: 9
     timeout: 5000
+    jedis:
+      pool:
+        max-active: 10
+        max-idle: 8
+        min-idle: 1
+        max-wait: 5000
     # 哨兵模式
     #    password: 123456aA.
     #    database: 9
@@ -32,18 +44,18 @@ spring:
     #    password: 123456aA.
     #    cluster:
     #      nodes:
-    lettuce:
-      pool:
-        # 连接池最大空闲连接
-        max-idle: 8
-        # 连接池最大连接数（使用负值表示没有限制）
-        max-active: 8
-        # 连接池最大阻塞等待时间（使用负值表示没有限制）
-        max-wait: 1000
-        # 连接池中的最小空闲连接
-        min-idle: 1
-      # 在关闭客户端连接之前等待任务处理完成的最长时间，在这之后，无论任务是否执行完成，都会被执行器关闭，默认100ms
-      shutdown-timeout: 100
+  #    lettuce:
+  #      pool:
+  #        # 连接池最大空闲连接
+  #        max-idle: 8
+  #        # 连接池最大连接数（使用负值表示没有限制）
+  #        max-active: 8
+  #        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+  #        max-wait: 1000
+  #        # 连接池中的最小空闲连接
+  #        min-idle: 1
+  #      # 在关闭客户端连接之前等待任务处理完成的最长时间，在这之后，无论任务是否执行完成，都会被执行器关闭，默认100ms
+  #      shutdown-timeout: 100
   cache:
     redis:
       cache-null-values: false

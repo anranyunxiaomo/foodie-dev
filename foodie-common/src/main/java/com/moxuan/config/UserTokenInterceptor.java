@@ -8,16 +8,21 @@ import com.moxuan.utils.BaseResp;
 import com.moxuan.utils.RedisOperator;
 import com.moxuan.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+
 import static com.moxuan.constant.CookieKeyConstant.HEADER_USER_ID;
 import static com.moxuan.constant.CookieKeyConstant.HEADER_USER_TOKEN;
 import static com.moxuan.constant.RedisKeyConstant.REDIS_USER_TOKEN;
+
+@Configuration
 
 public class UserTokenInterceptor implements HandlerInterceptor {
     @Autowired

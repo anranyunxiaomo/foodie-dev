@@ -121,7 +121,7 @@ public class CenterUserService extends ServiceImpl<UsersMapper, Users> {
                 .select(Users::getUsername, Users::getId, Users::getFace, Users::getSex)
                 .one();
         // 解决分布式用户会话同步的问题。
-        usersService.generateUserInfo(request,response,users);
+       this.usersService.generateUserInfo(request, response, users);
     }
 
 }

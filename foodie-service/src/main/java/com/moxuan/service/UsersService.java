@@ -9,7 +9,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moxuan.bo.UserAddBO;
 import com.moxuan.bo.UserBO;
 import com.moxuan.config.UserFaceProperties;
-import static com.moxuan.constant.RedisKeyConstant.*;
 import com.moxuan.enums.Sex;
 import com.moxuan.mapper.UsersMapper;
 import com.moxuan.pojo.Users;
@@ -26,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 import static com.moxuan.constant.RedisKeyConstant.FOODIE_SHOPCART;
+import static com.moxuan.constant.RedisKeyConstant.REDIS_USER_TOKEN;
 
 @Service
 public class UsersService extends ServiceImpl<UsersMapper, Users> {
@@ -123,7 +123,7 @@ public class UsersService extends ServiceImpl<UsersMapper, Users> {
         String userUniqueToken = UUID.randomUUID().toString().trim();
         UsersVO usersVO = userMapper.toUsersVO(users, userUniqueToken);
         // 存储到token
-        redisOperator.set(REDIS_USER_TOKEN.getName()+":"+ users.getId(),userUniqueToken);
+        redisOperator.set(REDIS_USER_TOKEN.getName() + ":" + users.getId(), JSONUtil.toJsonStr(usersVO));
        // 更新 cookie
         CookieUtils.setCookie(request, response, "user", JSONUtil.toJsonStr(usersVO), true);
     }

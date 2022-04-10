@@ -1,5 +1,8 @@
 package com.moxuan.config;
 
+import org.apache.tomcat.util.http.LegacyCookieProcessor;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -25,16 +28,25 @@ public class CorsConfig {
         config.addAllowedOrigin("*");
         // 设置是否发送cookie信息
         config.setAllowCredentials(true);
-
         // 设置允许请求的方式
         config.addAllowedMethod("*");
         // 设置允许的header
+        config.addAllowedHeader("*");
+        // 在前端也有的框架可以配置这一样，前端是否允许跨域的时候携带：axios.defaults.withCredentials = true;
+        config.setAllowCredentials(true);
+        config.addAllowedMethod("*");
         config.addAllowedHeader("*");
         // 2. 为url添加映射路径
         UrlBasedCorsConfigurationSource corsSource = new UrlBasedCorsConfigurationSource();
         corsSource.registerCorsConfiguration("/**", config);
         // 3. 返回重新定义好的corsSource
         return new CorsFilter(corsSource);
+    }
+
+    @Bean
+    public WebServerFactoryCustomizer<TomcatServletWebServerFactory> cookieProcessorCustomizer() {
+        return (factory) -> factory.addContextCustomizers(
+                (context) -> context.setCookieProcessor(new LegacyCookieProcessor()));
     }
 
 }
