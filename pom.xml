@@ -37,7 +37,7 @@
         <slf4j-api.version>1.7.36</slf4j-api.version>
         <slf4j-log4j12.version>1.7.36</slf4j-log4j12.version>
         <hutool.version>5.7.22</hutool.version>
-        <fastjson.version>1.2.79</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <springfox.version>3.0.0</springfox.version>
     </properties>
